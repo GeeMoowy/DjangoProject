@@ -1,0 +1,99 @@
+[
+{
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+        "name": "Молоко",
+        "description": "Молоко пакетированное 1 литр",
+        "image": "images/2548a884484ca9d8ab593b9318bcb68f.png",
+        "category": 1,
+        "purchase_price": 70.0,
+        "created_at": "2025-03-24T21:01:28.964Z",
+        "updated_at": "2025-03-24T21:01:28.964Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+        "name": "Яйца куриные",
+        "description": "Яйца куриные, домашние по 10 штук",
+        "image": "images/1200x1200nocrop.jpeg",
+        "category": 1,
+        "purchase_price": 150.0,
+        "created_at": "2025-03-24T21:12:18.562Z",
+        "updated_at": "2025-03-24T21:12:18.562Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+        "name": "Кондиционер для белья",
+        "description": "Средство для полоскания",
+        "image": "images/zke3gmrpvgqqt19x3jutxyn0qf62ljdk.jpg",
+        "category": 2,
+        "purchase_price": 250.0,
+        "created_at": "2025-03-24T21:14:16.288Z",
+        "updated_at": "2025-03-24T21:14:16.288Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 5,
+    "fields": {
+        "name": "Футболка",
+        "description": "Футболка черная с принтом",
+        "image": "images/футболка.jpeg",
+        "category": 3,
+        "purchase_price": 620.0,
+        "created_at": "2025-03-24T22:07:55.402Z",
+        "updated_at": "2025-03-24T22:07:55.402Z"
+    }
+},
+{
+    "model": "catalog.product",
+    "pk": 6,
+    "fields": {
+        "name": "Кросовки",
+        "description": "Кросовки белые, спортивные",
+        "image": "images/кросовки.jpg",
+        "category": 4,
+        "purchase_price": 3000.0,
+        "created_at": "2025-03-24T22:11:00.018Z",
+        "updated_at": "2025-03-24T22:45:42.561Z"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+        "name": "Продукты питания",
+        "description": "Продукты, которые можно употреблять в пищу."
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+        "name": "Бытовая химия",
+        "description": "Средства для чистки"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 3,
+    "fields": {
+        "name": "Одежда",
+        "description": "Одежда для всей семьи"
+    }
+},
+{
+    "model": "catalog.category",
+    "pk": 4,
+    "fields": {
+        "name": "Обувь",
+        "description": "Стильная всесезонная обувь"
+    }
+}
+]
