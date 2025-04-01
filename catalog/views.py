@@ -20,3 +20,8 @@ def contacts(request):
         message = request.POST.get("message")
         return HttpResponse(f"Спасибо {name}! Ваши данный приняты.")
     return render(request, 'contacts.html')
+
+
+def product_detail(request):
+    product = Product.objects.get(id=1)
+    return render(request, 'product_detail.html', {'product': product})
