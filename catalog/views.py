@@ -1,16 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 
 from catalog.models import Product
 
 
 def home(request):
-    latest_products = Product.objects.order_by('-created_at')[:5]
-
-    for product in latest_products:
-        print(f'Продукт: {product.name}, Цена: {product.purchase_price}, Дата создания: {product.created_at}')
-
-    return render(request, 'home.html')
+    products = Product.objects.all()
+    return render(request, 'home.html', {'products': products})
 
 
 def contacts(request):
@@ -22,6 +18,6 @@ def contacts(request):
     return render(request, 'contacts.html')
 
 
-def product_detail(request):
-    product = Product.objects.get(id=1)
+def product_detail(request, id):
+    product = get_object_or_404(Product, id=id)  # Получаем продукт по ID
     return render(request, 'product_detail.html', {'product': product})
