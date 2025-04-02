@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Каталог{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-5">{{ product.name }}</h1>
+        <div class="card">
+            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="width: 300px; height: auto;">
+            <div class="card-body">
+                <p class="card-text"><strong>Описание:</strong> {{ product.description }}</p>
+                <p class="card-text"><strong>Категория:</strong> {{ product.category.name }}</p>
+                <p class="card-text"><strong>Цена за покупку:</strong> {{ product.purchase_price }} руб.</p>
+                <p class="card-text"><strong>Дата создания:</strong> {{ product.created_at }}</p>
+                <p class="card-text"><strong>Дата обновления:</strong> {{ product.updated_at }}</p>
+            </div>
+        </div>
+    <a href="{% url 'catalog:home' %}" class="btn btn-primary mt-3">Назад к списку товаров</a>
+</div>
+{% endblock %}
