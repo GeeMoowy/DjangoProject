@@ -3,41 +3,42 @@
 {% block title %}Каталог{% endblock %}
 
 {% block content %}
+    {% include 'menu.html' %}
 
-<div class="container">
-    <h1 class="mt-4">Список товаров</h1>
-    <div class="row">
-        {% for product in products %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 d-flex flex-column">
-                <img src="{{ product.image.url }}" class="card-img-top img-fluid" alt="{{ product.name }}">
-                <div class="card-body d-flex flex-column flex-grow-1">
-                    <h5 class="card-title">{{ product.name }}</h5>
-                    <p class="card-text">{{ product.description|truncatechars:100 }}</p>
-                    <div class="mt-auto">
-                        <a href="{% url 'catalog:product_detail' product.id %}" class="btn btn-primary">Подробнее</a>
+    <div class="container">
+        <h1 class="mt-4">Список товаров</h1>
+        <div class="row">
+            {% for product in products %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 d-flex flex-column">
+                    <img src="{{ product.image.url }}" class="card-img-top img-fluid" alt="{{ product.name }}">
+                    <div class="card-body d-flex flex-column flex-grow-1">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description|truncatechars:100 }}</p>
+                        <div class="mt-auto">
+                            <a href="{% url 'catalog:product_detail' product.id %}" class="btn btn-primary">Подробнее</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        {% endfor %}
-        <div class="pagination">
-            <span class="step-links">
-                {% if products.has_previous %}
-                    <a href="?page=1">&laquo; Первая</a>
-                    <a href="?page={{ products.previous_page_number }}">Предыдущая</a>
-                {% endif %}
+            {% endfor %}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if products.has_previous %}
+                        <a href="?page=1">&laquo; Первая</a>
+                        <a href="?page={{ products.previous_page_number }}">Предыдущая</a>
+                    {% endif %}
 
-                <span class="current">
-                    Страница {{ products.number }} из {{ products.paginator.num_pages }}.
+                    <span class="current">
+                        Страница {{ products.number }} из {{ products.paginator.num_pages }}.
+                    </span>
+                    {% if products.has_next %}
+                        <a href="?page={{ products.next_page_number }}">Следующая</a>
+                        <a href="?page={{ products.paginator.num_pages }}">Последняя &raquo;</a>
+                    {% endif %}
                 </span>
-                {% if products.has_next %}
-                    <a href="?page={{ products.next_page_number }}">Следующая</a>
-                    <a href="?page={{ products.paginator.num_pages }}">Последняя &raquo;</a>
-                {% endif %}
-            </span>
+            </div>
+        </div>
         </div>
     </div>
-    </div>
-</div>
 {% endblock %}
