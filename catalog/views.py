@@ -1,18 +1,19 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-from django.core.paginator import Paginator
+from django.views.generic import ListView
 
 from catalog.models import Product
 from .forms import ProductForm
 
 
-def home(request):
-    products_list = Product.objects.all()
-    paginator = Paginator(products_list, 6)
-    page_number = request.GET.get('page')
-    products = paginator.get_page(page_number)
+class HomeView(ListView):
+    model = Product
+    template_name = 'home.html'
+    context_object_name = 'products'
+    paginate_by = 6
 
-    return render(request, 'home.html', {'products': products})
+    def get_queryset(self):
+        return Product.objects.all()
 
 
 def contacts(request):
