@@ -9,19 +9,21 @@
     <h1 class="mt-4">Мои блоги</h1>
     <div class="row">
         {% for blog in blogs %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 d-flex flex-column">
-                <img src="{{ blog.preview.url }}" class="card-img-top img-fluid" alt="{{ blog.title }}">
-                <div class="card-body d-flex flex-column flex-grow-1">
-                    <h5 class="card-title">{{ blog.title }}</h5>
-                    <div class="mt-auto">
-                        <a href="{% url 'blogs:blog_detail' blog.id %}" class="btn btn-primary">Читать блог</a>
-                        <a href="{% url 'blogs:blog_update' blog.id %}" class="btn btn-primary">Редактировать</a>
-                        <a href="{% url 'blogs:blog_delete' blog.id %}" class="btn btn-primary">Удалить</a>
+            {% if blog.sign_of_publication %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 d-flex flex-column">
+                        <img src="{{ blog.preview.url }}" class="card-img-top img-fluid" alt="{{ blog.title }}">
+                        <div class="card-body d-flex flex-column flex-grow-1">
+                            <h5 class="card-title">{{ blog.title }}</h5>
+                            <div class="mt-auto">
+                                <a href="{% url 'blogs:blog_detail' blog.id %}" class="btn btn-primary">Читать блог</a>
+                                <a href="{% url 'blogs:blog_update' blog.id %}" class="btn btn-primary">Редактировать</a>
+                                <a href="{% url 'blogs:blog_delete' blog.id %}" class="btn btn-primary">Удалить</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            {% endif %}
         {% endfor %}
     </div>
 

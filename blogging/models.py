@@ -9,7 +9,7 @@ class Blog(models.Model):
     preview = models.ImageField(upload_to='images/', verbose_name='Превью')
     created_at = models.DateTimeField(auto_now_add=True)
     sign_of_publication = models.BooleanField(default=False, verbose_name='Опубликовано')
-    views_count = models.IntegerField(default=0, verbose_name='Количество просмотров')
+    views_count = models.PositiveIntegerField(default=0, verbose_name='Количество просмотров')
 
     def __str__(self):
         return f'{self.title} - {self.created_at}'

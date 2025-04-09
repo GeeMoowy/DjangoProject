@@ -6,7 +6,6 @@
     {% include 'blogging/menu.html' %}
 
     <div class="container">
-        <h1 class="mt-5">Добавить новый блог</h1>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
