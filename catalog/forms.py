@@ -8,3 +8,9 @@ class ProductForm(forms.ModelForm):
         """С помощью класса Meta указываем с какой моделью связана форма и определяем поля"""
         model = Product
         fields = ['name', 'description', 'image', 'category', 'purchase_price']
+
+
+class ContactsForm(forms.Form):
+    name = forms.CharField(max_length=100)
+    phone = forms.CharField(max_length=15)
+    message = forms.CharField(widget=forms.Textarea)

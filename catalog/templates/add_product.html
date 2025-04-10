@@ -3,7 +3,8 @@
 {% block title %}Каталог{% endblock %}
 
 {% block content %}
-<div class="container">
+{% include 'menu.html' %}
+    <div class="container">
         <h1 class="mt-5">Добавить новый товар</h1>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
