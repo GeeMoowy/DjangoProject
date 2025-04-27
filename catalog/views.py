@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-from django.views.generic import ListView, FormView, DetailView
+from django.views.generic import ListView, FormView, DetailView, UpdateView, DeleteView
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 
@@ -38,6 +38,21 @@ class ProductDetailView(DetailView):
 
 
 class ProductCreateView(CreateView):
+    model = Product
     template_name = 'add_product.html'
     form_class = ProductForm
     success_url = reverse_lazy('catalog:home')
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'add_product.html'
+    success_url = reverse_lazy('catalog:home')
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    template_name = 'product_confirm_delete.html'
+    success_url = reverse_lazy('catalog:home')
+    context_object_name = 'product'

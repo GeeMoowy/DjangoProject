@@ -17,6 +17,8 @@
                         <p class="card-text">{{ product.description|truncatechars:100 }}</p>
                         <div class="mt-auto">
                             <a href="{% url 'catalog:product_detail' product.id %}" class="btn btn-primary">Подробнее</a>
+                            <a href="{% url 'catalog:product_update' product.id %}" class="btn btn-primary">Редактировать</a>
+                            <a href="{% url 'catalog:product_delete' product.id %}" class="btn btn-danger">Удалить</a>
                         </div>
                     </div>
                 </div>
