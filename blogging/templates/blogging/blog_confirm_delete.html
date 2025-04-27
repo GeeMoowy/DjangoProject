@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Создать блог{% endblock %}
+
+{% block content %}
+    {% include 'blogging/menu.html' %}
+
+    <div class="container">
+        <h1 class="mt-5">Удалить блог: {{ blog.title }}?</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger mt-5">Удалить</button>
+            <a class="btn btn-primary mt-5" href="{% url 'blogs:blogs' %}">Отменить</a>
+        </form>
+    </div>
+
+{% endblock %}

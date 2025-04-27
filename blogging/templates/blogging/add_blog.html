@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %}Товар{% endblock %}
+{% block title %}Создать блог{% endblock %}
 
 {% block content %}
-{% include 'menu.html' %}
+    {% include 'blogging/menu.html' %}
+
     <div class="container">
-        <h1 class="mt-5">Добавить или редактировать товар</h1>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
@@ -17,6 +17,6 @@
                 {% endif %}
             </button>
         </form>
-        <a href="{% url 'catalog:home' %}" class="btn btn-secondary mt-3">Назад к списку товаров</a>
     </div>
+
 {% endblock %}

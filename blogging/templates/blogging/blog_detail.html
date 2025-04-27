@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title%}Блог{% endblock %}
+
+{% block content %}
+    {% include 'blogging/menu.html' %}
+<div class="container mt-5">
+    <h1 class="mb-5">{{ blog.title }}</h1>
+    <div class="card">
+        <img src="{{ blog.preview.url }}" class="card-img-top" alt="{{ blog.title }}" style="width: 300px; height: auto;">
+        <div class="card-body">
+            <p class="card-text"><strong>Содержимое:</strong> {{ blog.content }}</p>
+            <p class="card-text"><strong>Дата создания:</strong> {{ blog.created_at }}</p>
+            <p class="card-text"><strong>Признак публикации:</strong> {{ blog.sign_of_publication }}</p>
+            <p class="card-text"><strong>Количество просмотров:</strong> {{ blog.views_count }}</p>
+        </div>
+    </div>
+    <a href="{% url 'blogs:blogs' %}" class="btn btn-primary mt-3">Назад на главную</a>
+</div>
+{% endblock %}
