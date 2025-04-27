@@ -1,4 +1,6 @@
 from django import forms
+from django.core.exceptions import ValidationError
+
 from .models import Product
 
 
@@ -11,6 +13,19 @@ class ProductForm(forms.ModelForm):
         """С помощью класса Meta указываем с какой моделью связана форма и определяем поля"""
         model = Product
         fields = ['name', 'description', 'image', 'category', 'purchase_price']
+
+    def __init__(self, *args, **kwargs):
+        """Переопределяем метод __init__ для стилизации полей формы"""
+        super().__init__(*args, **kwargs)
+
+        # Добавляем классы CSS к полям формы
+        self.fields['name'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Введите название продукта'})
+        self.fields['description'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Введите описание продукта'})
+        self.fields['image'].widget.attrs.update({'class': 'form-control-file'})
+        self.fields['category'].widget.attrs.update({'class': 'form-control'})
+        self.fields['purchase_price'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Введите цену продукта'})
 
     def clean(self):
         """Кастомная валидация для проверки запрещенных слов"""
@@ -34,6 +49,20 @@ class ProductForm(forms.ModelForm):
             raise forms.ValidationError("Цена продукта не может быть отрицательной.")
 
         return price
+
+    def clean_image(self):
+        image = self.cleaned_data.get('image')
+
+        if not image:
+            raise ValidationError("Пожалуйста, загрузите изображение.")
+
+        if not (image.name.endswith('.jpg') or image.name.endswith('.jpeg') or image.name.endswith('.png')):
+            raise ValidationError("Формат изображения должен быть JPEG или PNG.")
+
+        if image.size > 5 * 1024 * 1024:
+            raise ValidationError("Размер изображения не должен превышать 5 МБ.")
+
+        return image
 
 
 class ContactsForm(forms.Form):
