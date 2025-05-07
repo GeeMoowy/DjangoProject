@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %}Вход{% endblock %}
+{% block title %}Регистрация{% endblock %}
 
 {% block content %}
 {% include 'menu.html' %}
 <div class="container">
-    <h1 class="mt-5">Войти в приложение</h1>
+    <h1 class="mt-5">Регистрация</h1>
     <form class="row" method="post" enctype="multipart/form-data">
       <div class="col-6">
         <div class="card">
@@ -14,7 +14,7 @@
             {{ form.as_p }}
           </div>
           <button type="submit" class="btn btn-primary">
-            Войти
+            Зарегистрироваться
           </button>
         </div>
       </div>

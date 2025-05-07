@@ -1,8 +1,8 @@
-from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.views.generic import ListView, FormView, DetailView, UpdateView, DeleteView
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from catalog.models import Product
 from .forms import ProductForm, ContactsForm
@@ -18,7 +18,7 @@ class HomeView(ListView):
         return Product.objects.all()
 
 
-class ContactsView(FormView):
+class ContactsView(LoginRequiredMixin, FormView):
     template_name = 'contacts.html'
     form_class = ContactsForm
     success_url = reverse_lazy('catalog:contacts')
@@ -31,27 +31,27 @@ class ContactsView(FormView):
         return HttpResponse(f"Спасибо {name}! Ваши данные приняты.")
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     template_name = 'product_detail.html'
     context_object_name = 'product'
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     template_name = 'add_product.html'
     form_class = ProductForm
     success_url = reverse_lazy('catalog:home')
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = 'add_product.html'
     success_url = reverse_lazy('catalog:home')
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'product_confirm_delete.html'
     success_url = reverse_lazy('catalog:home')
