@@ -1,8 +1,9 @@
-from django.http import HttpResponse
-from django.views.generic import ListView, FormView, DetailView, UpdateView, DeleteView
+from django.http import HttpResponse, HttpResponseForbidden
+from django.shortcuts import get_object_or_404, redirect
+from django.views.generic import ListView, FormView, DetailView, UpdateView, DeleteView, View
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 from catalog.models import Product
 from .forms import ProductForm, ContactsForm
@@ -37,22 +38,39 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'product'
 
 
-class ProductCreateView(LoginRequiredMixin, CreateView):
+class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Product
     template_name = 'add_product.html'
     form_class = ProductForm
     success_url = reverse_lazy('catalog:home')
+    permission_required = 'catalog.add_product'
 
 
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = 'add_product.html'
     success_url = reverse_lazy('catalog:home')
+    permission_required = 'catalog.change_product'
 
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Product
     template_name = 'product_confirm_delete.html'
     success_url = reverse_lazy('catalog:home')
     context_object_name = 'product'
+    permission_required = 'catalog.delete_product'
+
+
+class ProductUnpublishView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = 'catalog.can_unpublished_product'
+
+    def post(self, request, pk):
+        product = get_object_or_404(Product, id=pk)
+
+        if not request.user.has_perm('library.can_unpublish_product'):
+            return HttpResponseForbidden('Нужны права модератора продуктов')
+
+        product.is_published = False
+        product.save()
+        return redirect('catalog:home')
