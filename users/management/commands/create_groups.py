@@ -7,7 +7,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         group_name = 'Модератор продуктов'
-        group, created = Group.objects.ger_or_create(name=group_name)
+        group, created = Group.objects.get_or_create(name=group_name)
         if created:
             self.stdout.write(self.style.SUCCES(f'Группа "{group_name}" успешно создана.'))
         else:
