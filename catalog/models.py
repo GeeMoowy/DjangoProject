@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import CASCADE
+from django.contrib.auth.models import Permission
 
 
 class Product(models.Model):
@@ -12,6 +13,7 @@ class Product(models.Model):
     purchase_price = models.FloatField(default=0.0, verbose_name='Цена за покупку')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    is_published = models.BooleanField(default=False, verbose_name='Опубликован')
 
     def __str__(self):
         return f'{self.name}: {self.description}'
@@ -20,6 +22,9 @@ class Product(models.Model):
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
         ordering = ['name']
+        permissions = [
+            ('can_unpublish_product', 'Может отменить публикацию продукта'),
+        ]
 
 
 class Category(models.Model):
