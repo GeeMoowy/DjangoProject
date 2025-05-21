@@ -15,7 +15,7 @@ class HomeView(ListView):
     paginate_by = 6
 
     def get_queryset(self):
-        return Product.objects.all()
+        return Product.objects.filter(is_published=True)
 
 
 class ContactsView(LoginRequiredMixin, FormView):
