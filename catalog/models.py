@@ -17,7 +17,7 @@ class Product(models.Model):
     purchase_price = models.FloatField(default=0.0, verbose_name='Цена за покупку')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_published = models.BooleanField(default=False, verbose_name='Опубликован')
+    is_published = models.BooleanField(default=True, verbose_name='Опубликован')
     owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Владелец')
 
     def __str__(self):

@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import ListView, FormView, DetailView, UpdateView, DeleteView, View
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 
 from catalog.models import Product
 from .forms import ProductForm, ContactsForm
@@ -38,28 +38,47 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'product'
 
 
-class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     template_name = 'add_product.html'
     form_class = ProductForm
     success_url = reverse_lazy('catalog:home')
-    permission_required = 'catalog.add_product'
 
 
-class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
+
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = 'add_product.html'
     success_url = reverse_lazy('catalog:home')
-    permission_required = 'catalog.change_product'
+
+    def dispatch(self, request, *args, **kwargs):
+        product = self.get_object()
+        if product.owner != request.user:
+            return HttpResponseForbidden("У Вас нет прав для редактирования этого продукта.")
+        return super().dispatch(request, *args, **kwargs)
 
 
-class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'product_confirm_delete.html'
     success_url = reverse_lazy('catalog:home')
     context_object_name = 'product'
-    permission_required = 'catalog.Can_delete_product'
+
+    def dispatch(self, request, *args, **kwargs):
+        product = self.get_object()
+
+        if product.owner == request.user:
+            return super().dispatch(request, *args, **kwargs)
+
+        if request.user.groups.filter(name='Модератор продуктов').exists():
+            return super().dispatch(request, *args, **kwargs)
+
+        return HttpResponseForbidden("У Вас нет прав для удаления этого продукта.")
 
 
 class ProductUnpublishView(LoginRequiredMixin, PermissionRequiredMixin, View):
