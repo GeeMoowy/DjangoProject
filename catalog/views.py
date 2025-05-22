@@ -59,16 +59,16 @@ class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView)
     template_name = 'product_confirm_delete.html'
     success_url = reverse_lazy('catalog:home')
     context_object_name = 'product'
-    permission_required = 'catalog.delete_product'
+    permission_required = 'catalog.Can_delete_product'
 
 
 class ProductUnpublishView(LoginRequiredMixin, PermissionRequiredMixin, View):
-    permission_required = 'catalog.can_unpublished_product'
+    permission_required = 'catalog.Can_unpublish_product'
 
     def post(self, request, pk):
         product = get_object_or_404(Product, id=pk)
 
-        if not request.user.has_perm('library.can_unpublish_product'):
+        if not request.user.has_perm('catalog.Can_unpublish_product'):
             return HttpResponseForbidden('Нужны права модератора продуктов')
 
         product.is_published = False
