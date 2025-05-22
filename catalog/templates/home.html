@@ -6,6 +6,13 @@
     {% include 'menu.html' %}
 
     <div class="container">
+        <h6 class="mt-4">
+            {% if user.is_authenticated %}
+                Приветствуем на нашем сайте, {{user.username}}!
+            {% else %}
+                Приветствуем на нашем сайте, Гость!
+            {% endif %}
+        </h6>
         <h1 class="mt-4">Список товаров</h1>
         <div class="row">
             {% for product in products %}
@@ -16,9 +23,23 @@
                         <h5 class="card-title">{{ product.name }}</h5>
                         <p class="card-text">{{ product.description|truncatechars:100 }}</p>
                         <div class="mt-auto">
+                            {% if product.owner == user %}
+                                <a href="{% url 'catalog:product_update' product.id %}" class="btn btn-primary">Редактировать</a>
+                                <form action="{% url 'catalog:product_delete' product.id %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Удалить</button>
+                                </form>
+                            {% elif is_moderator %}
+                                <form action="{% url 'catalog:product_delete' product.id %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Удалить</button>
+                                </form>
+                            <form action="{% url 'catalog:product_unpublish' product.id %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary">Снять с публикации</button>
+                            </form>
+                            {% endif %}
                             <a href="{% url 'catalog:product_detail' product.id %}" class="btn btn-primary">Подробнее</a>
-                            <a href="{% url 'catalog:product_update' product.id %}" class="btn btn-primary">Редактировать</a>
-                            <a href="{% url 'catalog:product_delete' product.id %}" class="btn btn-danger">Удалить</a>
                         </div>
                     </div>
                 </div>
