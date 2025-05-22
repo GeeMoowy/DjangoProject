@@ -18,6 +18,11 @@ class HomeView(ListView):
     def get_queryset(self):
         return Product.objects.filter(is_published=True)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_moderator'] = self.request.user.groups.filter(name='Модератор продуктов').exists()
+        return context
+
 
 class ContactsView(LoginRequiredMixin, FormView):
     template_name = 'contacts.html'
