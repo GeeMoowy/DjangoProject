@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Продукты в категории: {{ category.name }}{% endblock %}
+
+{% block content %}
+{% include 'menu.html' %}
+    <h1>Продукты в категории: {{ category.name }}</h1>
+    <div class="row">
+        {% for product in products %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>Нет продуктов в этой категории.</p>
+        {% endfor %}
+        <a href="{% url 'catalog:home' %}" class="btn btn-primary mt-3 d-inline-block">Назад на главную</a>
+    </div>
+{% endblock %}
