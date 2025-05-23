@@ -3,10 +3,12 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import ListView, FormView, DetailView, UpdateView, DeleteView, View
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.cache import cache
 
 from catalog.models import Product
 from .forms import ProductForm, ContactsForm
+from .services import get_product_from_cache
 
 
 class HomeView(ListView):
@@ -16,7 +18,7 @@ class HomeView(ListView):
     paginate_by = 6
 
     def get_queryset(self):
-        return Product.objects.filter(is_published=True)
+        return get_product_from_cache()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -97,4 +99,5 @@ class ProductUnpublishView(LoginRequiredMixin, PermissionRequiredMixin, View):
 
         product.is_published = False
         product.save()
+        cache.delete('products_list')
         return redirect('catalog:home')
