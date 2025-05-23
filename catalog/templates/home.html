@@ -14,6 +14,16 @@
             {% endif %}
         </h6>
         <h1 class="mt-4">Список товаров</h1>
+        <div class="dropdown d-inline-block mb-4">
+            <button class="btn btn-outline-primary dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Продукты по категориям
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                {% for category in categories %}
+                    <li><a class="dropdown-item" href="{% url 'catalog:products_by_category' category.id %}">{{ category.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
         <div class="row">
             {% for product in products %}
             <div class="col-md-4 mb-4">

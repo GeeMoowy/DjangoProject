@@ -6,9 +6,9 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.cache import cache
 
-from catalog.models import Product
+from catalog.models import Product, Category
 from .forms import ProductForm, ContactsForm
-from .services import get_product_from_cache
+from .services import get_product_from_cache, get_products_by_category
 
 
 class HomeView(ListView):
@@ -22,6 +22,7 @@ class HomeView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()  # Получаем все категории
         context['is_moderator'] = self.request.user.groups.filter(name='Модератор продуктов').exists()
         return context
 
@@ -101,3 +102,18 @@ class ProductUnpublishView(LoginRequiredMixin, PermissionRequiredMixin, View):
         product.save()
         cache.delete('products_list')
         return redirect('catalog:home')
+
+
+class ProductsByCategoryView(ListView):
+    model = Product
+    template_name = 'products_by_category.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        category_id = self.kwargs['category_id']
+        return Product.objects.filter(category_id=category_id, is_published=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category'] = Category.objects.get(id=self.kwargs['category_id'])
+        return context

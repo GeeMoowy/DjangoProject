@@ -14,3 +14,8 @@ def get_product_from_cache():
     products = Product.objects.filter(is_published=True)
     cache.set(key, products)
     return products
+
+
+def get_products_by_category(category_id):
+    """Возвращает список всех продуктов в указанной категории."""
+    return Product.objects.filter(category_id=category_id, is_published=True)
